@@ -3,15 +3,16 @@ package org.qut;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.Flow;
 
 public class MyFrameLayout {
     private final int width = 650;
-    private final int height = 650;
-
-    private final int hudWidth = width;
-    private final int hudHeight = 200;
+    private final int height = 670;
 
     private static JFrame frame;
     private static MyCanvas canvas;
@@ -51,8 +52,8 @@ public class MyFrameLayout {
 
         // See mycanvas.repaintComponent
         // to see how the line gets drawn
+        canvas.setLayout(new GridLayout(0, 1));
         canvas.setBackground(Color.white);
-        canvas.setPreferredSize(new Dimension(width, height));
         canvas.setFocusable(false);
 
         frame.add(canvas, BorderLayout.CENTER);
@@ -70,7 +71,6 @@ public class MyFrameLayout {
         JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
         separator2.setPreferredSize(new Dimension(2, 25));
 
-        // Align items to the left
         p.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         Button btnEllipse = new Button("Ellipse");
@@ -79,12 +79,20 @@ public class MyFrameLayout {
         Button btnRectangle = new Button("Rectangle");
         Button btnPoint = new Button("Point");
 
-        JTextField rTxtbox = new JTextField(3);
         JLabel rLabel = new JLabel("R: ");
-        JTextField gTxtbox = new JTextField(3);
+        JTextField rTxtbox = new JTextField(3);
+        rTxtbox.setText("255");
+        rTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(rTxtbox));
+
         JLabel gLabel = new JLabel("G: ");
-        JTextField bTxtbox = new JTextField(3);
+        JTextField gTxtbox = new JTextField(3);
+        gTxtbox.setText("255");
+        gTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(gTxtbox));
+
         JLabel bLabel = new JLabel("B: ");
+        JTextField bTxtbox = new JTextField(3);
+        bTxtbox.setText("255");
+        bTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(bTxtbox));
 
         JCheckBox isFilledCheckbox = new JCheckBox("Fill");
 
@@ -108,5 +116,55 @@ public class MyFrameLayout {
         p.add(bTxtbox);
 
         frame.add(p, BorderLayout.NORTH); //f.add(p);
+    }
+
+    // Generates a DocumentListener to ensures the textbox value is a u8 Integer
+    private static DocumentListener ensureU8TxtListener (JTextField jtxt) {
+        return new DocumentListener() {
+            Runnable doCheckU8 = new Runnable() {
+                @Override
+                public void run() {
+                    // Extract Digits only
+                    String s = jtxt.getText().replaceAll("\\D", "");
+
+                    // Mutation :(
+                    // But such is the Java way of doing things
+                    Integer i;
+
+                    // Check within range
+                    try {
+                        i = Integer.parseInt(s);
+                        if (i > 255) {
+                            i = 255;
+                        }
+                        else if (i < 0) {
+                            i = 0;
+                        }
+                    } catch (Exception ex) {
+                        i = 0;
+                    }
+
+                    // Only update if text is not the same
+                    if (!i.toString().equals(jtxt.getText())) {
+                        jtxt.setText(i.toString());
+                    }
+                }
+            };
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(doCheckU8);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(doCheckU8);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                SwingUtilities.invokeLater(doCheckU8);
+            }
+        };
     }
 }
