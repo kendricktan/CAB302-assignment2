@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
-public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener, ComponentListener {
+public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
     // Draw Commands is a list of strings containing
     // What's been drawn (in order)
     public ArrayList<String> drawCommands = new ArrayList();
@@ -29,7 +29,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         addMouseMotionListener(this);
         addMouseListener(this);
-        addComponentListener(this);
     }
 
     /* Helper functions */
@@ -135,23 +134,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 g2.draw(new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin));
             }
         }
-    }
-
-    @Override
-    public void componentResized(ComponentEvent e) {
-        System.out.println("Resized, width: " + e.getComponent().getWidth() + ", height: " + e.getComponent().getHeight());
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e) {
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
     }
 
     /* Mouse Event Listener  */
