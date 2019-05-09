@@ -3,30 +3,29 @@ package org.qut;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
 public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener, ComponentListener {
     // Draw Commands is a list of strings containing
     // What's been drawn (in order)
-    public ArrayList<String> drawCommands;
+    public ArrayList<String> drawCommands = new ArrayList();
 
-    public MyShape.Shape curDrawShape;
-    public Integer curRValue;
-    public Integer curGValue;
-    public Integer curBValue;
-    public boolean curFillShape;
+    public MyShape.Shape curDrawShape = MyShape.Shape.ELLIPSE;
+    public Integer curRValue = 0;
+    public Integer curGValue = 0;
+    public Integer curBValue = 0;
+    public boolean curFillShape = false;
+
+    public Double mousePressedX = -1.0;
+    public Double mousePressedY = -1.0;
+
+    public Double mouseDraggedX = -1.0;
+    public Double mouseDraggedY = -1.0;
 
     // Constructor
     public MyCanvas() {
         super();
-
-        drawCommands = new ArrayList();
-
-        curFillShape = false;
-        curDrawShape = MyShape.Shape.ELLIPSE;
-        curRValue = 0;
-        curGValue = 0;
-        curBValue = 0;
 
         addMouseMotionListener(this);
         addMouseListener(this);
@@ -38,29 +37,31 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         return String.format("#%02x%02x%02x", curRValue, curGValue, curBValue);
     }
 
-    /* Getter Setters */
-    public Integer getCurRValue() {
-        return curRValue;
+    /* Scales x value to window width value
+        x must be between 0.0 and 1.0
+    */
+    public int scaleX2WinWidth (Double x) {
+        return (int) (x * getWidth());
     }
 
-    public void setCurRValue(Integer curRValue) {
-        this.curRValue = curRValue;
+    public int scaleX2WinWidth (String x) {
+        return scaleX2WinWidth(Double.valueOf(x));
     }
 
-    public Integer getCurGValue() {
-        return curGValue;
+    public int scaleY2WinHeight (Double y) {
+        return (int) (y * getHeight());
     }
 
-    public void setCurGValue(Integer curGValue) {
-        this.curGValue = curGValue;
+    public int scaleY2WinHeight (String y) {
+        return scaleY2WinHeight(Double.valueOf(y));
     }
 
-    public Integer getCurBValue() {
-        return curBValue;
+    public Double normalizeX (int x) {
+        return Double.valueOf(x) / this.getWidth();
     }
 
-    public void setCurBValue(Integer curBValue) {
-        this.curBValue = curBValue;
+    public Double normalizeY (int y) {
+        return Double.valueOf(y) / this.getHeight();
     }
 
     /* Component Listener */
@@ -77,19 +78,63 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         for (String curCommand: drawCommands) {
             String[] cmds = curCommand.split("\\s+");
 
-            // Change colorv
+            // Change color
             if (cmds[0].toUpperCase().equals("FILL")) {
                 g2.setColor(Color.decode(cmds[1]));
             }
 
             // Point
             if (cmds[0].toUpperCase().equals("PLOT")) {
-                int x = (int) (Double.valueOf(cmds[1]) * getWidth());
-                int y = (int) (Double.valueOf(cmds[2]) * getHeight());
+                int x = scaleX2WinWidth(cmds[1]);
+                int y = scaleY2WinHeight(cmds[2]);
                 g2.drawLine(x, y, x, y);
             }
+
+            // Rectangle
+            if (cmds[0].toUpperCase().equals("RECTANGLE")) {
+                int x1 = scaleX2WinWidth(cmds[1]);
+                int y1 = scaleY2WinHeight(cmds[2]);
+                int x2 = scaleX2WinWidth(cmds[3]);
+                int y2 = scaleY2WinHeight(cmds[4]);
+
+                g2.drawRect(x1, y1, x2 - x1, y2 - y1);
+            }
+
+            // Ellipse
+            if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                int x1 = scaleX2WinWidth(cmds[1]);
+                int y1 = scaleY2WinHeight(cmds[2]);
+                int x2 = scaleX2WinWidth(cmds[3]);
+                int y2 = scaleY2WinHeight(cmds[4]);
+
+                g2.draw(new Ellipse2D.Double(x1, y1, x2 - x1, y2 - y1));
+            }
+
         }
 
+        // If we're "previewing" the draw state
+        if (mousePressedX >= 0.0 && mousePressedY >= 0.0 && mouseDraggedX >= 0.0 && mouseDraggedY >= 0.0) {
+            g2.setColor(Color.decode(rgbToHex()));
+
+            int x1 = scaleX2WinWidth(mousePressedX);
+            int x2 = scaleX2WinWidth(mouseDraggedX);
+            int y1 = scaleY2WinHeight(mousePressedY);
+            int y2 = scaleY2WinHeight(mouseDraggedY);
+
+            int xMin = Math.min(x1, x2);
+            int yMin = Math.min(y1, y2);
+
+            int xMax = Math.max(x1, x2);
+            int yMax = Math.max(y1, y2);
+
+            if (curDrawShape == MyShape.Shape.RECTANGLE) {
+                g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
+            }
+
+            if (curDrawShape == MyShape.Shape.ELLIPSE) {
+                g2.draw(new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin));
+            }
+        }
     }
 
     @Override
@@ -112,11 +157,12 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     /* Mouse Event Listener  */
     @Override
     public void mousePressed(MouseEvent e) {
-        Double scaledX = Double.valueOf(e.getX()) / this.getWidth();
-        Double scaledY = Double.valueOf(e.getY()) / this.getHeight();
-        if (curDrawShape == MyShape.Shape.POINT) {
-            drawCommands.add("FILL " + rgbToHex());
-            drawCommands.add("PLOT " + scaledX + " " + scaledY);
+        Double scaledX = normalizeX(e.getX());
+        Double scaledY = normalizeY(e.getY());
+
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+            mousePressedX = scaledX;
+            mousePressedY = scaledY;
         }
 
         repaint();
@@ -124,6 +170,38 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Double scaledX = normalizeX(e.getX());
+        Double scaledY = normalizeY(e.getY());
+
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+            // Add PEN Shape
+            drawCommands.add("FILL " + rgbToHex());
+
+            if (curFillShape) {
+                // TODO: Add fill logic
+            }
+
+            Double startX = Math.min(mousePressedX, scaledX);
+            Double startY = Math.min(mousePressedY, scaledY);
+            Double endX = Math.max(mousePressedX, scaledX);
+            Double endY = Math.max(mousePressedY, scaledY);
+
+            // Add RECTANGLE command
+            if (curDrawShape == MyShape.Shape.RECTANGLE) {
+                drawCommands.add("RECTANGLE " + startX + " " + startY + " " + endX + " " + endY);
+            } else if (curDrawShape == MyShape.Shape.ELLIPSE) {
+                drawCommands.add("ELLIPSE " + startX + " " + startY + " " + endX + " " + endY);
+            }
+
+            // Reset mouse presses / drag
+            mousePressedX = -1.0;
+            mousePressedY = -1.0;
+
+            mouseDraggedX = -1.0;
+            mouseDraggedY = -1.0;
+        }
+
+        repaint();
     }
 
     @Override
@@ -132,6 +210,15 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        Double scaledX = normalizeX(e.getX());
+        Double scaledY = normalizeY(e.getY());
+
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+            mouseDraggedX = scaledX;
+            mouseDraggedY = scaledY;
+        }
+
+        repaint();
     }
 
     @Override
@@ -144,5 +231,15 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // Mouse pressed only happens
+        Double scaledX = normalizeX(e.getX());
+        Double scaledY = normalizeY(e.getY());
+
+        if (curDrawShape == MyShape.Shape.POINT) {
+            drawCommands.add("FILL " + rgbToHex());
+            drawCommands.add("PLOT " + scaledX + " " + scaledY);
+        }
+
+        repaint();
     }
 }

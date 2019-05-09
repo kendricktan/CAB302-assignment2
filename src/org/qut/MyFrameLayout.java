@@ -23,7 +23,7 @@ public class MyFrameLayout {
     private static JMenuBar menubar;
 
     // Buttons
-    private static JButton btnEllipse, btnSquare, btnTriangle, btnRectangle, btnPoint;
+    private static JButton btnEllipse, btnTriangle, btnRectangle, btnPoint;
 
     // Constructor
     public MyFrameLayout() {
@@ -84,10 +84,6 @@ public class MyFrameLayout {
         btnEllipse.setBorder(BorderFactory.createEmptyBorder());
         btnEllipse.addActionListener(btnActionListener(btnEllipse, MyShape.Shape.ELLIPSE));
 
-        btnSquare = new JButton("Square");
-        btnSquare.setBorder(BorderFactory.createEmptyBorder());
-        btnSquare.addActionListener(btnActionListener(btnSquare, MyShape.Shape.SQUARE));
-
         btnTriangle = new JButton("Triangle");
         btnTriangle.setBorder(BorderFactory.createEmptyBorder());
         btnTriangle.addActionListener(btnActionListener(btnTriangle, MyShape.Shape.TRIANGLE));
@@ -108,21 +104,21 @@ public class MyFrameLayout {
         // Callback function is just a very funky way of updating value in
         // MyCanvas without the extra hassle
         rTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                rTxtbox, (x) -> { canvas.setCurRValue(x); return null; })
+                rTxtbox, (x) -> { canvas.curRValue = x; return null; })
         );
 
         JLabel gLabel = new JLabel("G: ");
         JTextField gTxtbox = new JTextField(3);
         gTxtbox.setText("0");
         gTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                gTxtbox, (x) -> { canvas.setCurGValue(x); return null; })
+                gTxtbox, (x) -> { canvas.curGValue = x; return null; })
         );
 
         JLabel bLabel = new JLabel("B: ");
         JTextField bTxtbox = new JTextField(3);
         bTxtbox.setText("0");
         bTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                bTxtbox, (x) -> { canvas.setCurBValue(x); return null; })
+                bTxtbox, (x) -> { canvas.curBValue = x; return null; })
         );
 
         JCheckBox isFilledCheckbox = new JCheckBox("Fill");
@@ -134,7 +130,6 @@ public class MyFrameLayout {
         });
 
         p.add(btnEllipse);
-        p.add(btnSquare);
         p.add(btnTriangle);
         p.add(btnRectangle);
         p.add(btnPoint);
@@ -165,7 +160,6 @@ public class MyFrameLayout {
                 btnEllipse.setBorder(BorderFactory.createEmptyBorder());
                 btnPoint.setBorder(BorderFactory.createEmptyBorder());
                 btnRectangle.setBorder(BorderFactory.createEmptyBorder());
-                btnSquare.setBorder(BorderFactory.createEmptyBorder());
                 btnTriangle.setBorder(BorderFactory.createEmptyBorder());
 
                 // Select current button
