@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
     // Draw Commands is a list of strings containing
     // What's been drawn (in order)
-    public ArrayList<String> drawCommands = new ArrayList();
+    private ArrayList<String> drawCommands = new ArrayList();
 
     // Current shape to be drawn
     // State mutation is done on MyFrameLayout
@@ -28,7 +28,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     // Maybe write a setter/getter for this
     public boolean curFillShape = false;
 
-    // TODO: Make these into objects
     public Coordinate mouseMovedC = new Coordinate(-1.0, -1.0);
     public Coordinate mousePressedC = new Coordinate(-1.0, -1.0);
     public Coordinate mouseDraggedC = new Coordinate(-1.0, -1.0);
@@ -41,39 +40,87 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         addMouseListener(this);
     }
 
-    /* Helper functions */
-    public String outlineRgbToHex() {
+    /* Public helper functions */
+
+    public void resetCommands() {
+        drawCommands = new ArrayList<>();
+
+        repaint();
+    }
+
+    public void addCommand(String s) {
+        drawCommands.add(s);
+
+        repaint();
+    }
+
+    public void undoLastCommand() {
+        if (drawCommands.size() == 0) {
+            return;
+        }
+
+        try {
+            // FILL OFF
+            if (drawCommands.get(drawCommands.size() - 1).toUpperCase().equals("FILL OFF")) {
+                drawCommands.remove(drawCommands.size() - 1);
+            }
+
+            // Remove operations
+            if (drawCommands.size() > 0) {
+                drawCommands.remove(drawCommands.size() - 1);
+            }
+
+            // Remove fill color
+            if (drawCommands.get(drawCommands.size() - 1).toUpperCase().startsWith("FILL")) {
+                drawCommands.remove(drawCommands.size() - 1);
+            }
+
+            // Also remove pen color
+            if (drawCommands.get(drawCommands.size() - 1).toUpperCase().startsWith("PEN")) {
+                drawCommands.remove(drawCommands.size() - 1);
+            }
+        } catch (Exception e) { }
+
+        repaint();
+    }
+
+    public ArrayList<String> getCommands() {
+        return drawCommands;
+    }
+
+    /* Internal helper functions */
+    private String outlineRgbToHex() {
         return String.format("#%02x%02x%02x", penColor.getRed(), penColor.getGreen(), penColor.getBlue());
     }
 
-    public String fillRgbToHex() {
+    private String fillRgbToHex() {
         return String.format("#%02x%02x%02x", fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue());
     }
 
     /* Scales x value to window width value
         x must be between 0.0 and 1.0
     */
-    public int scaleX2WinWidth (Double x) {
+    private int scaleX2WinWidth (Double x) {
         return (int) (x * getWidth());
     }
 
-    public int scaleX2WinWidth (String x) {
+    private int scaleX2WinWidth (String x) {
         return scaleX2WinWidth(Double.valueOf(x));
     }
 
-    public int scaleY2WinHeight (Double y) {
+    private int scaleY2WinHeight (Double y) {
         return (int) (y * getHeight());
     }
 
-    public int scaleY2WinHeight (String y) {
+    private int scaleY2WinHeight (String y) {
         return scaleY2WinHeight(Double.valueOf(y));
     }
 
-    public Double normalizeX (int x) {
+    private Double normalizeX (int x) {
         return Double.valueOf(x) / this.getWidth();
     }
 
-    public Double normalizeY (int y) {
+    private Double normalizeY (int y) {
         return Double.valueOf(y) / this.getHeight();
     }
 
@@ -85,6 +132,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         // G2 allows stroke width
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
+        g2.setColor(Color.black);
 
         // Do we wanna fill up stuff?
         boolean isFilling = false;

@@ -2,16 +2,18 @@ package org.qut;
 
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.function.Function;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class MyFrameLayout {
+    // Frame Details
     private final int width = 800;
     private final int height = 650;
 
@@ -33,24 +35,112 @@ public class MyFrameLayout {
         frame.pack();
         frame.setVisible(true);
         frame.setSize(width, height);
+        frame.setFocusable(true);
+        frame.requestFocus();
+
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    canvas.undoLastCommand();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
     }
 
     public static void createMenuBar() {
         menubar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new JMenuItem("New"));
-        fileMenu.add(new JMenuItem("Load"));
-        fileMenu.add(new JMenuItem("Save"));
-        fileMenu.add(new JMenuItem("Save as..."));
-        fileMenu.add(new JMenuItem("Export As PNG"));
+        JMenuItem newJMI = new JMenuItem("New");
+        newJMI.addActionListener((e) -> {
+            canvas.resetCommands();
+        });
+
+        JMenuItem loadJMI = new JMenuItem("Load");
+        loadJMI.addActionListener((e) -> {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "VEC Files", "vec", "VEC");
+            chooser.setFileFilter(filter);
+
+            int returnVal = chooser.showOpenDialog(frame);
+
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+                try {
+                    FileReader fileReader = new FileReader(file);
+                    BufferedReader in = new BufferedReader(fileReader);
+                    String line = in.readLine();
+
+                    // Reset canvas draw
+                    canvas.resetCommands();
+
+                    while(line != null){
+                        canvas.addCommand(line);
+                        line = in.readLine();
+                    }
+                } catch (Exception ex) {
+                    showMessageDialog(null, "Error reading file: " + ex.toString());
+                }
+
+            }
+        });
+
+        JMenuItem saveJMI = new JMenuItem("Save");
+        saveJMI.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+
+                String filename = fileChooser.getSelectedFile().toString();
+                if (!filename .endsWith(".vec")) {
+                    filename += ".vec";
+                }
+
+                File file = new File(filename);
+
+                // Save to file
+                try {
+                    FileWriter fileWriter = new FileWriter(file);
+
+                    for (String cmd: canvas.getCommands()) {
+                        fileWriter.write(cmd + "\n");
+                    }
+
+                    fileWriter.close();
+
+                } catch (Exception ex) {
+                    showMessageDialog(null, "Error saving file: " + ex.toString());
+                }
+            }
+        });
+
+        JMenuItem undoJMI = new JMenuItem("Undo (Ctrl+Z)");
+        undoJMI.addActionListener((e) -> {
+            canvas.undoLastCommand();
+        });
+
+        fileMenu.add(newJMI);
+        fileMenu.add(loadJMI);
+        fileMenu.add(saveJMI);
+        fileMenu.add(new JMenuItem("Export As BMP"));
+        fileMenu.addSeparator();
+        fileMenu.add(undoJMI);
 
         menubar.add(fileMenu);
 
         frame.setJMenuBar(menubar);
     }
 
-    
+
     public static void createDrawFrame(int width, int height) {
         canvas = new MyCanvas();
 
