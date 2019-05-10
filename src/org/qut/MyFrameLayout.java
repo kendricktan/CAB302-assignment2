@@ -102,7 +102,7 @@ public class MyFrameLayout {
             }
         });
 
-        // Add buttons
+        // Add tool buttons
         p.add(btnEllipse);
         p.add(btnLine);
         p.add(btnPolygon);
@@ -113,39 +113,44 @@ public class MyFrameLayout {
         p.add(Box.createHorizontalStrut(3));
         p.add(newJSeperator());
 
-        // Add outline color
-        p.add(new JLabel("(Outline) R: "));
-        p.add(newU8TextField("0", (x) -> { canvas.outlineRValue = x; return null; }));
-        p.add(new JLabel("G: "));
-        p.add(newU8TextField("0", (x) -> { canvas.outlineGValue = x; return null; }));
-        p.add(new JLabel("B: "));
-        p.add(newU8TextField("0", (x) -> { canvas.outlineBValue = x; return null; }));
+        // Select PEN color
+        JButton outlineColorBtn = new JButton("      ");
+        outlineColorBtn.setSize(20, 20);
+        outlineColorBtn.setBorder(BorderFactory.createEmptyBorder());
+        outlineColorBtn.setBackground(canvas.outlineColor);
+        outlineColorBtn.addActionListener((e) -> {
+            Color c = JColorChooser.showDialog(frame, "Select PEN color", canvas.outlineColor);
+            if (c != null) {
+                canvas.outlineColor = c;
+                outlineColorBtn.setBackground(canvas.outlineColor);
+            }
+        });
+        p.add(new JLabel("PEN Color: "));
+        p.add(outlineColorBtn);
 
         // Add padding + separator
         p.add(newJSeperator());
         p.add(Box.createHorizontalStrut(3));
 
-        // Add fill + color selector
+        // Select FILL Color
+        // Select outline color
+        JButton fillColorBtn = new JButton("      ");
+        fillColorBtn.setSize(20, 20);
+        fillColorBtn.setBorder(BorderFactory.createEmptyBorder());
+        fillColorBtn.setBackground(canvas.fillColor);
+        fillColorBtn.addActionListener((e) -> {
+            Color c = JColorChooser.showDialog(frame, "Select FILL color", canvas.fillColor);
+            if (c != null) {
+                canvas.fillColor = c;
+                fillColorBtn.setBackground(canvas.fillColor);
+            }
+        });
+
+        p.add(new JLabel("FILL Color: "));
+        p.add(fillColorBtn);
         p.add(isFilledCheckbox);
-        p.add(new JLabel("R: "));
-        p.add(newU8TextField("0", (x) -> { canvas.fillRValue = x; return null; }));
-        p.add(new JLabel("G: "));
-        p.add(newU8TextField("0", (x) -> { canvas.fillGValue = x; return null; }));
-        p.add(new JLabel("B: "));
-        p.add(newU8TextField("0", (x) -> { canvas.fillBValue = x; return null; }));
 
-        frame.add(p, BorderLayout.NORTH); //f.add(p);
-    }
-
-    // Textbox "Factory"
-    private static JTextField newU8TextField (String defaultVal, Function<Integer, Void> fn) {
-        JTextField txtbox = new JTextField(3);
-        txtbox.setText(defaultVal);
-        txtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                txtbox, fn)
-        );
-
-        return txtbox;
+        frame.add(p, BorderLayout.NORTH);
     }
 
     // Seperator "Factory"
@@ -172,60 +177,6 @@ public class MyFrameLayout {
                 // Select current button
                 btn.setBorder(BorderFactory.createLineBorder(Color.black, 2));
                 canvas.curDrawShape = shape;
-            }
-        };
-    }
-
-    // DocumentListener "Factory"
-    private static DocumentListener ensureU8TxtListener (JTextField jtxt, Function<Integer, Void> fn) {
-        return new DocumentListener() {
-            Runnable doCheckU8 = new Runnable() {
-                @Override
-                public void run() {
-                    // Extract Digits only
-                    String s = jtxt.getText().replaceAll("\\D", "");
-
-                    // Mutation :(
-                    // But such is the Java way of doing things
-                    Integer i;
-
-                    // Check within range
-                    try {
-                        i = Integer.parseInt(s);
-                        if (i > 255) {
-                            i = 255;
-                        }
-                        else if (i < 0) {
-                            i = 0;
-                        }
-                    } catch (Exception ex) {
-                        i = 0;
-                    }
-
-                    // Only update if text is not the same
-                    if (!i.toString().equals(jtxt.getText())) {
-                        jtxt.setText(i.toString());
-                    }
-
-                    // Apply callback function
-                    // (Mainly to update canvas's r, g, or b value
-                    fn.apply(i);
-                }
-            };
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(doCheckU8);
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(doCheckU8);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                SwingUtilities.invokeLater(doCheckU8);
             }
         };
     }

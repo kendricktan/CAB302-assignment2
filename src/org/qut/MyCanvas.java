@@ -16,18 +16,12 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     // State mutation is done on MyFrameLayout
     public MyShape.Shape curDrawShape = MyShape.Shape.ELLIPSE;
 
-    // TODO: Encapsulate all the "current" variables into a class?
+    // TODO: Encapsulate all the "current" variables into a stateful class?
     // String to store polygon clicked coordinates
     public String curPolygonCoords = "";
 
-    // TODO: Make these into Objects
-    public Integer outlineRValue = 0;
-    public Integer outlineGValue = 0;
-    public Integer outlineBValue = 0;
-
-    public Integer fillRValue = 0;
-    public Integer fillGValue = 0;
-    public Integer fillBValue = 0;
+    public Color outlineColor = Color.black;
+    public Color fillColor = Color.yellow;
 
     // Do we wanna fill the shape?
     // State mutation is done in MyFrameLayout
@@ -54,11 +48,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     /* Helper functions */
     public String outlineRgbToHex() {
-        return String.format("#%02x%02x%02x", outlineRValue, outlineGValue, outlineBValue);
+        return String.format("#%02x%02x%02x", outlineColor.getRed(), outlineColor.getGreen(), outlineColor.getBlue());
     }
 
     public String fillRgbToHex() {
-        return String.format("#%02x%02x%02x", fillRValue, fillGValue, fillBValue);
+        return String.format("#%02x%02x%02x", fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue());
     }
 
     /* Scales x value to window width value
