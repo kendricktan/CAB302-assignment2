@@ -5,6 +5,7 @@ public class MyShape {
         RECTANGLE,
         POLYGON,
         ELLIPSE,
-        POINT
+        POINT,
+        LINE
     }
 }

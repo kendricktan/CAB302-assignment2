@@ -12,15 +12,15 @@ import java.awt.event.ItemListener;
 import java.util.function.Function;
 
 public class MyFrameLayout {
-    private final int width = 650;
-    private final int height = 670;
+    private final int width = 800;
+    private final int height = 650;
 
     private static JFrame frame;
     private static MyCanvas canvas;
     private static JMenuBar menubar;
 
     // Buttons
-    private static JButton btnEllipse, btnPolygon, btnRectangle, btnPoint;
+    private static JButton btnEllipse, btnPolygon, btnRectangle, btnLine, btnPoint;
 
     // Constructor
     public MyFrameLayout() {
@@ -83,6 +83,10 @@ public class MyFrameLayout {
         btnRectangle.setBorder(BorderFactory.createEmptyBorder());
         btnRectangle.addActionListener(btnActionListener(btnRectangle, MyShape.Shape.RECTANGLE));
 
+        btnLine = new JButton("Line");
+        btnLine.setBorder(BorderFactory.createEmptyBorder());
+        btnLine.addActionListener(btnActionListener(btnLine, MyShape.Shape.LINE));
+
         btnPoint = new JButton("Point");
         btnPoint.setBorder(BorderFactory.createEmptyBorder());
         btnPoint.addActionListener(btnActionListener(btnPoint, MyShape.Shape.POINT));
@@ -100,6 +104,7 @@ public class MyFrameLayout {
 
         // Add buttons
         p.add(btnEllipse);
+        p.add(btnLine);
         p.add(btnPolygon);
         p.add(btnRectangle);
         p.add(btnPoint);
@@ -122,7 +127,7 @@ public class MyFrameLayout {
 
         // Add fill + color selector
         p.add(isFilledCheckbox);
-        p.add(new JLabel("(Outline) R: "));
+        p.add(new JLabel("R: "));
         p.add(newU8TextField("0", (x) -> { canvas.fillRValue = x; return null; }));
         p.add(new JLabel("G: "));
         p.add(newU8TextField("0", (x) -> { canvas.fillGValue = x; return null; }));
@@ -162,6 +167,7 @@ public class MyFrameLayout {
                 btnPoint.setBorder(BorderFactory.createEmptyBorder());
                 btnRectangle.setBorder(BorderFactory.createEmptyBorder());
                 btnPolygon.setBorder(BorderFactory.createEmptyBorder());
+                btnLine.setBorder(BorderFactory.createEmptyBorder());
 
                 // Select current button
                 btn.setBorder(BorderFactory.createLineBorder(Color.black, 2));

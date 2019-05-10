@@ -129,7 +129,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
 
             // Rectangle
-            if (cmds[0].toUpperCase().equals("RECTANGLE")) {
+            else if (cmds[0].toUpperCase().equals("RECTANGLE")) {
                 int x1 = scaleX2WinWidth(cmds[1]);
                 int y1 = scaleY2WinHeight(cmds[2]);
                 int x2 = scaleX2WinWidth(cmds[3]);
@@ -158,7 +158,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
 
             // Ellipse
-            if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+            else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
                 int x1 = scaleX2WinWidth(cmds[1]);
                 int y1 = scaleY2WinHeight(cmds[2]);
                 int x2 = scaleX2WinWidth(cmds[3]);
@@ -188,8 +188,18 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 g2.draw(ellipse);
             }
 
+            // Line
+            else if (cmds[0].toUpperCase().equals("LINE")) {
+                int x1 = scaleX2WinWidth(cmds[1]);
+                int y1 = scaleY2WinHeight(cmds[2]);
+                int x2 = scaleX2WinWidth(cmds[3]);
+                int y2 = scaleY2WinHeight(cmds[4]);
+
+                g2.drawLine(x1, y1, x2, y2);
+            }
+
             // Polygon
-            if (cmds[0].toUpperCase().equals("POLYGON")) {
+            else if (cmds[0].toUpperCase().equals("POLYGON")) {
                 // Slice array
                 String[] coords = Arrays.copyOfRange(cmds, 1, cmds.length);
 
@@ -248,7 +258,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
             }
 
-            if (curDrawShape == MyShape.Shape.ELLIPSE) {
+            else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                 Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
 
                 if (curFillShape) {
@@ -260,6 +270,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 }
 
                 g2.draw(ellipse);
+            }
+
+            else if (curDrawShape == MyShape.Shape.LINE) {
+                g2.drawLine(x1, y1, x2, y2);
             }
         }
 
@@ -305,7 +319,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
 
-        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
             mousePressedX = scaledX;
             mousePressedY = scaledY;
         }
@@ -318,7 +332,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
 
-        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
             // Add PEN Shape
             drawCommands.add("PEN " + outlineRgbToHex());
 
@@ -337,6 +351,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 drawCommands.add("RECTANGLE " + startX + " " + startY + " " + endX + " " + endY);
             } else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                 drawCommands.add("ELLIPSE " + startX + " " + startY + " " + endX + " " + endY);
+            } else if (curDrawShape == MyShape.Shape.LINE) {
+                drawCommands.add("LINE " + mousePressedX + " " + mousePressedY + " " + scaledX + " " + scaledY);
             }
 
             if (curFillShape) {
@@ -363,7 +379,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
 
-        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE) {
+        if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
             mouseDraggedX = scaledX;
             mouseDraggedY = scaledY;
         }
@@ -413,6 +429,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 drawCommands.add("POLYGON " + curPolygonCoords);
 
+                // End FILL command
                 if (curFillShape) {
                     drawCommands.add("FILL OFF");
                 }
