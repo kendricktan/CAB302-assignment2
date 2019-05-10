@@ -247,8 +247,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         // If we're "previewing" the draw state
         // Read the latest values
         if (mousePressedC.getX() >= 0.0 && mousePressedC.getY() >= 0.0 && mouseDraggedC.getX() >= 0.0 && mouseDraggedC.getY() >= 0.0) {
-            g2.setColor(Color.decode(outlineRgbToHex()));
-
             int x1 = scaleX2WinWidth(mousePressedC.getX());
             int x2 = scaleX2WinWidth(mouseDraggedC.getX());
             int y1 = scaleY2WinHeight(mousePressedC.getY());
@@ -263,8 +261,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
 
             if (curFillShape) {
-                Color curColor = g2.getColor();
-
                 g2.setColor(Color.decode(fillRgbToHex()));
 
                 if (curDrawShape == MyShape.Shape.RECTANGLE) {
@@ -273,9 +269,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                     g2.fill(ellipse);
                 }
-
-                g2.setColor(curColor);
             }
+
+            g2.setColor(Color.decode(outlineRgbToHex()));
 
             if (curDrawShape == MyShape.Shape.RECTANGLE) {
                 g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
@@ -315,12 +311,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             Polygon poly = new Polygon(x_points, y_points, n_points);
 
             if (curFillShape) {
-                Color curColor = g2.getColor();
-
                 g2.setColor(Color.decode(fillRgbToHex()));
                 g2.fillPolygon(poly);
-                g2.setColor(curColor);
             }
+
+            g2.setColor(Color.decode(outlineRgbToHex()));
 
             g2.drawPolygon(poly);
         }
