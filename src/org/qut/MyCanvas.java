@@ -118,36 +118,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
 
             // Rectangle
-            else if (cmds[0].toUpperCase().equals("RECTANGLE")) {
-                int x1 = scaleX2WinWidth(cmds[1]);
-                int y1 = scaleY2WinHeight(cmds[2]);
-                int x2 = scaleX2WinWidth(cmds[3]);
-                int y2 = scaleY2WinHeight(cmds[4]);
-
-                int xMin = Math.min(x1, x2);
-                int yMin = Math.min(y1, y2);
-
-                int xMax = Math.max(x1, x2);
-                int yMax = Math.max(y1, y2);
-
-                // If fill
-                if (isFilling) {
-                    // Get current color to revert back to the outline color
-                    Color prevColor = g2.getColor();
-                    g2.setColor(Color.decode(fillingColor));
-
-                    // Fill with filling color
-                    g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
-
-                    // Revert back to outline color
-                    g2.setColor(prevColor);
-                }
-
-                g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
-            }
-
-            // Ellipse
-            else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+            else if (cmds[0].toUpperCase().equals("RECTANGLE") || cmds[0].toUpperCase().equals("LINE") || cmds[0].toUpperCase().equals("ELLIPSE")) {
                 int x1 = scaleX2WinWidth(cmds[1]);
                 int y1 = scaleY2WinHeight(cmds[2]);
                 int x2 = scaleX2WinWidth(cmds[3]);
@@ -167,24 +138,29 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                     Color prevColor = g2.getColor();
                     g2.setColor(Color.decode(fillingColor));
 
-                    // Fill with filling color
-                    g2.fill(ellipse);
+                    // Fill RECT
+                    if (cmds[0].toUpperCase().equals("RECTANGLE")) {
+                        g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
+                    }
+
+                    // Fill Ellipse
+                    else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                        g2.fill(ellipse);
+                    }
 
                     // Revert back to outline color
                     g2.setColor(prevColor);
                 }
 
-                g2.draw(ellipse);
-            }
-
-            // Line
-            else if (cmds[0].toUpperCase().equals("LINE")) {
-                int x1 = scaleX2WinWidth(cmds[1]);
-                int y1 = scaleY2WinHeight(cmds[2]);
-                int x2 = scaleX2WinWidth(cmds[3]);
-                int y2 = scaleY2WinHeight(cmds[4]);
-
-                g2.drawLine(x1, y1, x2, y2);
+                if (cmds[0].toUpperCase().equals("RECTANGLE")) {
+                    g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
+                }
+                else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                    g2.draw(ellipse);
+                }
+                else if (cmds[0].toUpperCase().equals("LINE")) {
+                    g2.drawLine(x1, y1, x2, y2);
+                }
             }
 
             // Polygon
@@ -192,7 +168,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 // Slice array
                 String[] coords = Arrays.copyOfRange(cmds, 1, cmds.length);
 
-                // Construct n_points
+                // Construct n_points from array of string
                 int n_points = (coords.length / 2);
                 int x_points[] = new int[n_points];
                 int y_points[] = new int[n_points];
@@ -205,6 +181,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                     y_points[i/2] = y;
                 }
 
+                // New polygon
                 Polygon poly = new Polygon(x_points, y_points, n_points);
 
                 if (isFilling) {
@@ -235,29 +212,28 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             int xMax = Math.max(x1, x2);
             int yMax = Math.max(y1, y2);
 
-            if (curDrawShape == MyShape.Shape.RECTANGLE) {
-                if (curFillShape) {
-                    Color curColor = g2.getColor();
+            Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
 
-                    g2.setColor(Color.decode(fillRgbToHex()));
+            if (curFillShape) {
+                Color curColor = g2.getColor();
+
+                g2.setColor(Color.decode(fillRgbToHex()));
+
+                if (curDrawShape == MyShape.Shape.RECTANGLE) {
                     g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
-                    g2.setColor(curColor);
+                }
+                else if (curDrawShape == MyShape.Shape.ELLIPSE) {
+                    g2.fill(ellipse);
                 }
 
+                g2.setColor(curColor);
+            }
+
+            if (curDrawShape == MyShape.Shape.RECTANGLE) {
                 g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
             }
 
             else if (curDrawShape == MyShape.Shape.ELLIPSE) {
-                Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
-
-                if (curFillShape) {
-                    Color curColor = g2.getColor();
-
-                    g2.setColor(Color.decode(fillRgbToHex()));
-                    g2.fill(ellipse);
-                    g2.setColor(curColor);
-                }
-
                 g2.draw(ellipse);
             }
 
@@ -396,6 +372,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         }
 
         if (curDrawShape == MyShape.Shape.POLYGON) {
+            // Single click means log point
             if (e.getClickCount() == 1) {
                 curPolygonCoords += scaledX + " " + scaledY + " ";
             }
