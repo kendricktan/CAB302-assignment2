@@ -1,10 +1,13 @@
 package org.qut;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -123,6 +126,36 @@ public class MyFrameLayout {
             }
         });
 
+        JMenuItem exportBMPJMI = new JMenuItem("Export as BMP");
+        exportBMPJMI.addActionListener((e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().toString();
+                if (!filename .endsWith(".bmp")) {
+                    filename += ".bmp";
+                }
+
+                File file = new File(filename);
+
+                // Save to file
+                try {
+                    Graphics g = canvas.getGraphics();
+
+                    BufferedImage image = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    Graphics2D g2 = image.createGraphics();
+                    canvas.paint(g2);
+
+                    RenderedImage rendImage = image;
+                    ImageIO.write(rendImage, "bmp", file);
+
+                    g2.dispose();
+
+                } catch (Exception ex) {
+                    showMessageDialog(null, "Error saving file: " + ex.toString());
+                }
+            }
+        });
+
         JMenuItem undoJMI = new JMenuItem("Undo (Ctrl+Z)");
         undoJMI.addActionListener((e) -> {
             canvas.undoLastCommand();
@@ -131,7 +164,7 @@ public class MyFrameLayout {
         fileMenu.add(newJMI);
         fileMenu.add(loadJMI);
         fileMenu.add(saveJMI);
-        fileMenu.add(new JMenuItem("Export As BMP"));
+        fileMenu.add(exportBMPJMI);
         fileMenu.addSeparator();
         fileMenu.add(undoJMI);
 
@@ -162,22 +195,27 @@ public class MyFrameLayout {
         p.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         btnEllipse = new JButton("Ellipse");
+        btnEllipse.setFocusable(false);
         btnEllipse.setBorder(BorderFactory.createEmptyBorder());
         btnEllipse.addActionListener(btnActionListener(btnEllipse, MyShape.Shape.ELLIPSE));
 
         btnPolygon = new JButton("Polygon");
+        btnPolygon.setFocusable(false);
         btnPolygon.setBorder(BorderFactory.createEmptyBorder());
         btnPolygon.addActionListener(btnActionListener(btnPolygon, MyShape.Shape.POLYGON));
 
         btnRectangle = new JButton("Rectangle");
+        btnRectangle.setFocusable(false);
         btnRectangle.setBorder(BorderFactory.createEmptyBorder());
         btnRectangle.addActionListener(btnActionListener(btnRectangle, MyShape.Shape.RECTANGLE));
 
         btnLine = new JButton("Line");
+        btnLine.setFocusable(false);
         btnLine.setBorder(BorderFactory.createEmptyBorder());
         btnLine.addActionListener(btnActionListener(btnLine, MyShape.Shape.LINE));
 
         btnPoint = new JButton("Plot");
+        btnPoint.setFocusable(false);
         btnPoint.setBorder(BorderFactory.createEmptyBorder());
         btnPoint.addActionListener(btnActionListener(btnPoint, MyShape.Shape.POINT));
 
@@ -185,6 +223,7 @@ public class MyFrameLayout {
         btnEllipse.doClick();
 
         JCheckBox isFilledCheckbox = new JCheckBox("Fill");
+        isFilledCheckbox.setFocusable(false);
         isFilledCheckbox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -205,6 +244,7 @@ public class MyFrameLayout {
 
         // Select PEN color
         JButton outlineColorBtn = new JButton("      ");
+        outlineColorBtn.setFocusable(false);
         outlineColorBtn.setSize(20, 20);
         outlineColorBtn.setBorder(BorderFactory.createEmptyBorder());
         outlineColorBtn.setBackground(canvas.penColor);
@@ -226,6 +266,7 @@ public class MyFrameLayout {
         // Select outline color
         JButton fillColorBtn = new JButton("      ");
         fillColorBtn.setSize(20, 20);
+        fillColorBtn.setFocusable(false);
         fillColorBtn.setBorder(BorderFactory.createEmptyBorder());
         fillColorBtn.setBackground(canvas.fillColor);
         fillColorBtn.addActionListener((e) -> {

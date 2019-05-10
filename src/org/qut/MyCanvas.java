@@ -61,7 +61,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         try {
             // FILL OFF
-            if (drawCommands.get(drawCommands.size() - 1).toUpperCase().equals("FILL OFF")) {
+            if (drawCommands.get(drawCommands.size() - 1).toUpperCase().startsWith("FILL OFF")) {
                 drawCommands.remove(drawCommands.size() - 1);
             }
 
@@ -79,7 +79,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             if (drawCommands.get(drawCommands.size() - 1).toUpperCase().startsWith("PEN")) {
                 drawCommands.remove(drawCommands.size() - 1);
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
         repaint();
     }
