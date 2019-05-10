@@ -1,10 +1,7 @@
 package org.qut;
 
 
-import com.sun.jdi.VoidValue;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -23,7 +20,7 @@ public class MyFrameLayout {
     private static JMenuBar menubar;
 
     // Buttons
-    private static JButton btnEllipse, btnTriangle, btnRectangle, btnPoint;
+    private static JButton btnEllipse, btnPolygon, btnRectangle, btnPoint;
 
     // Constructor
     public MyFrameLayout() {
@@ -72,21 +69,15 @@ public class MyFrameLayout {
     public static void createHUD() {
         Panel p = new Panel();
 
-        JSeparator separator1 = new JSeparator(SwingConstants.VERTICAL);
-        separator1.setPreferredSize(new Dimension(2, 25));
-
-        JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
-        separator2.setPreferredSize(new Dimension(2, 25));
-
         p.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         btnEllipse = new JButton("Ellipse");
         btnEllipse.setBorder(BorderFactory.createEmptyBorder());
         btnEllipse.addActionListener(btnActionListener(btnEllipse, MyShape.Shape.ELLIPSE));
 
-        btnTriangle = new JButton("Triangle");
-        btnTriangle.setBorder(BorderFactory.createEmptyBorder());
-        btnTriangle.addActionListener(btnActionListener(btnTriangle, MyShape.Shape.TRIANGLE));
+        btnPolygon = new JButton("Polygon");
+        btnPolygon.setBorder(BorderFactory.createEmptyBorder());
+        btnPolygon.addActionListener(btnActionListener(btnPolygon, MyShape.Shape.POLYGON));
 
         btnRectangle = new JButton("Rectangle");
         btnRectangle.setBorder(BorderFactory.createEmptyBorder());
@@ -96,30 +87,8 @@ public class MyFrameLayout {
         btnPoint.setBorder(BorderFactory.createEmptyBorder());
         btnPoint.addActionListener(btnActionListener(btnPoint, MyShape.Shape.POINT));
 
+        // Click button
         btnEllipse.doClick();
-
-        JLabel rLabel = new JLabel("R: ");
-        JTextField rTxtbox = new JTextField(3);
-        rTxtbox.setText("0");
-        // Callback function is just a very funky way of updating value in
-        // MyCanvas without the extra hassle
-        rTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                rTxtbox, (x) -> { canvas.curRValue = x; return null; })
-        );
-
-        JLabel gLabel = new JLabel("G: ");
-        JTextField gTxtbox = new JTextField(3);
-        gTxtbox.setText("0");
-        gTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                gTxtbox, (x) -> { canvas.curGValue = x; return null; })
-        );
-
-        JLabel bLabel = new JLabel("B: ");
-        JTextField bTxtbox = new JTextField(3);
-        bTxtbox.setText("0");
-        bTxtbox.getDocument().addDocumentListener(ensureU8TxtListener(
-                bTxtbox, (x) -> { canvas.curBValue = x; return null; })
-        );
 
         JCheckBox isFilledCheckbox = new JCheckBox("Fill");
         isFilledCheckbox.addItemListener(new ItemListener() {
@@ -129,25 +98,57 @@ public class MyFrameLayout {
             }
         });
 
+        // Add buttons
         p.add(btnEllipse);
-        p.add(btnTriangle);
+        p.add(btnPolygon);
         p.add(btnRectangle);
         p.add(btnPoint);
 
+        // Add padding + separator
         p.add(Box.createHorizontalStrut(3));
-        p.add(separator1);
-        p.add(isFilledCheckbox);
-        p.add(separator2);
+        p.add(newJSeperator());
+
+        // Add outline color
+        p.add(new JLabel("(Outline) R: "));
+        p.add(newU8TextField("0", (x) -> { canvas.outlineRValue = x; return null; }));
+        p.add(new JLabel("G: "));
+        p.add(newU8TextField("0", (x) -> { canvas.outlineGValue = x; return null; }));
+        p.add(new JLabel("B: "));
+        p.add(newU8TextField("0", (x) -> { canvas.outlineBValue = x; return null; }));
+
+        // Add padding + separator
+        p.add(newJSeperator());
         p.add(Box.createHorizontalStrut(3));
 
-        p.add(rLabel);
-        p.add(rTxtbox);
-        p.add(gLabel);
-        p.add(gTxtbox);
-        p.add(bLabel);
-        p.add(bTxtbox);
+        // Add fill + color selector
+        p.add(isFilledCheckbox);
+        p.add(new JLabel("(Outline) R: "));
+        p.add(newU8TextField("0", (x) -> { canvas.fillRValue = x; return null; }));
+        p.add(new JLabel("G: "));
+        p.add(newU8TextField("0", (x) -> { canvas.fillGValue = x; return null; }));
+        p.add(new JLabel("B: "));
+        p.add(newU8TextField("0", (x) -> { canvas.fillBValue = x; return null; }));
 
         frame.add(p, BorderLayout.NORTH); //f.add(p);
+    }
+
+    // Textbox "Factory"
+    private static JTextField newU8TextField (String defaultVal, Function<Integer, Void> fn) {
+        JTextField txtbox = new JTextField(3);
+        txtbox.setText(defaultVal);
+        txtbox.getDocument().addDocumentListener(ensureU8TxtListener(
+                txtbox, fn)
+        );
+
+        return txtbox;
+    }
+
+    // Seperator "Factory"
+    private static JSeparator newJSeperator() {
+        JSeparator s = new JSeparator(SwingConstants.VERTICAL);
+        s.setPreferredSize(new Dimension(2, 25));
+
+        return s;
     }
 
 
@@ -160,7 +161,7 @@ public class MyFrameLayout {
                 btnEllipse.setBorder(BorderFactory.createEmptyBorder());
                 btnPoint.setBorder(BorderFactory.createEmptyBorder());
                 btnRectangle.setBorder(BorderFactory.createEmptyBorder());
-                btnTriangle.setBorder(BorderFactory.createEmptyBorder());
+                btnPolygon.setBorder(BorderFactory.createEmptyBorder());
 
                 // Select current button
                 btn.setBorder(BorderFactory.createLineBorder(Color.black, 2));
