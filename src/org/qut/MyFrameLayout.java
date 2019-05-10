@@ -87,7 +87,7 @@ public class MyFrameLayout {
         btnLine.setBorder(BorderFactory.createEmptyBorder());
         btnLine.addActionListener(btnActionListener(btnLine, MyShape.Shape.LINE));
 
-        btnPoint = new JButton("Point");
+        btnPoint = new JButton("Plot");
         btnPoint.setBorder(BorderFactory.createEmptyBorder());
         btnPoint.addActionListener(btnActionListener(btnPoint, MyShape.Shape.POINT));
 
@@ -117,12 +117,12 @@ public class MyFrameLayout {
         JButton outlineColorBtn = new JButton("      ");
         outlineColorBtn.setSize(20, 20);
         outlineColorBtn.setBorder(BorderFactory.createEmptyBorder());
-        outlineColorBtn.setBackground(canvas.outlineColor);
+        outlineColorBtn.setBackground(canvas.penColor);
         outlineColorBtn.addActionListener((e) -> {
-            Color c = JColorChooser.showDialog(frame, "Select PEN color", canvas.outlineColor);
+            Color c = JColorChooser.showDialog(frame, "Select PEN color", canvas.penColor);
             if (c != null) {
-                canvas.outlineColor = c;
-                outlineColorBtn.setBackground(canvas.outlineColor);
+                canvas.penColor = c;
+                outlineColorBtn.setBackground(canvas.penColor);
             }
         });
         p.add(new JLabel("PEN Color: "));

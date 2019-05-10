@@ -20,7 +20,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     // String to store polygon clicked coordinates
     public String curPolygonCoords = "";
 
-    public Color outlineColor = Color.black;
+    public Color penColor = Color.black;
     public Color fillColor = Color.yellow;
 
     // Do we wanna fill the shape?
@@ -29,14 +29,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     public boolean curFillShape = false;
 
     // TODO: Make these into objects
-    public Double mouseMovedX = -1.0;
-    public Double mouseMovedY = -1.0;
-
-    public Double mousePressedX = -1.0;
-    public Double mousePressedY = -1.0;
-
-    public Double mouseDraggedX = -1.0;
-    public Double mouseDraggedY = -1.0;
+    public Coordinate mouseMovedC = new Coordinate(-1.0, -1.0);
+    public Coordinate mousePressedC = new Coordinate(-1.0, -1.0);
+    public Coordinate mouseDraggedC = new Coordinate(-1.0, -1.0);
 
     // Constructor
     public MyCanvas() {
@@ -48,7 +43,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     /* Helper functions */
     public String outlineRgbToHex() {
-        return String.format("#%02x%02x%02x", outlineColor.getRed(), outlineColor.getGreen(), outlineColor.getBlue());
+        return String.format("#%02x%02x%02x", penColor.getRed(), penColor.getGreen(), penColor.getBlue());
     }
 
     public String fillRgbToHex() {
@@ -215,7 +210,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 if (isFilling) {
                     Color curColor = g2.getColor();
 
-                    g2.setColor(Color.decode(fillRgbToHex()));
+                    g2.setColor(Color.decode(fillingColor));
                     g2.fillPolygon(poly);
                     g2.setColor(curColor);
                 }
@@ -226,13 +221,13 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         // If we're "previewing" the draw state
         // Read the latest values
-        if (mousePressedX >= 0.0 && mousePressedY >= 0.0 && mouseDraggedX >= 0.0 && mouseDraggedY >= 0.0) {
+        if (mousePressedC.getX() >= 0.0 && mousePressedC.getY() >= 0.0 && mouseDraggedC.getX() >= 0.0 && mouseDraggedC.getY() >= 0.0) {
             g2.setColor(Color.decode(outlineRgbToHex()));
 
-            int x1 = scaleX2WinWidth(mousePressedX);
-            int x2 = scaleX2WinWidth(mouseDraggedX);
-            int y1 = scaleY2WinHeight(mousePressedY);
-            int y2 = scaleY2WinHeight(mouseDraggedY);
+            int x1 = scaleX2WinWidth(mousePressedC.getX());
+            int x2 = scaleX2WinWidth(mouseDraggedC.getX());
+            int y1 = scaleY2WinHeight(mousePressedC.getY());
+            int y2 = scaleY2WinHeight(mouseDraggedC.getY());
 
             int xMin = Math.min(x1, x2);
             int yMin = Math.min(y1, y2);
@@ -289,8 +284,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 y_points[i/2] = y;
             }
 
-            x_points[n_points - 1] = scaleX2WinWidth(mouseMovedX);
-            y_points[n_points - 1] = scaleY2WinHeight(mouseMovedY);
+            x_points[n_points - 1] = scaleX2WinWidth(mouseMovedC.getX());
+            y_points[n_points - 1] = scaleY2WinHeight(mouseMovedC.getY());
 
 
             Polygon poly = new Polygon(x_points, y_points, n_points);
@@ -314,8 +309,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledY = normalizeY(e.getY());
 
         if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
-            mousePressedX = scaledX;
-            mousePressedY = scaledY;
+            mousePressedC.setXY(scaledX, scaledY);
         }
 
         repaint();
@@ -335,10 +329,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 drawCommands.add("FILL " + fillRgbToHex());
             }
 
-            Double startX = Math.min(mousePressedX, scaledX);
-            Double startY = Math.min(mousePressedY, scaledY);
-            Double endX = Math.max(mousePressedX, scaledX);
-            Double endY = Math.max(mousePressedY, scaledY);
+            Double startX = Math.min(mousePressedC.getX(), scaledX);
+            Double startY = Math.min(mousePressedC.getY(), scaledY);
+            Double endX = Math.max(mousePressedC.getX(), scaledX);
+            Double endY = Math.max(mousePressedC.getY(), scaledY);
 
             // Add RECTANGLE command
             if (curDrawShape == MyShape.Shape.RECTANGLE) {
@@ -346,7 +340,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             } else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                 drawCommands.add("ELLIPSE " + startX + " " + startY + " " + endX + " " + endY);
             } else if (curDrawShape == MyShape.Shape.LINE) {
-                drawCommands.add("LINE " + mousePressedX + " " + mousePressedY + " " + scaledX + " " + scaledY);
+                drawCommands.add("LINE " + mousePressedC.getX() + " " + mousePressedC.getY() + " " + scaledX + " " + scaledY);
             }
 
             if (curFillShape) {
@@ -354,11 +348,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
 
             // Reset mouse presses / drag
-            mousePressedX = -1.0;
-            mousePressedY = -1.0;
-
-            mouseDraggedX = -1.0;
-            mouseDraggedY = -1.0;
+            mousePressedC.setXY(-1.0, -1.0);
+            mouseDraggedC.setXY(-1.0, -1.0);
         }
 
         repaint();
@@ -374,8 +365,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledY = normalizeY(e.getY());
 
         if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
-            mouseDraggedX = scaledX;
-            mouseDraggedY = scaledY;
+            mouseDraggedC.setXY(scaledX, scaledY);
         }
 
         repaint();
@@ -386,8 +376,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
 
-        mouseMovedX = scaledX;
-        mouseMovedY = scaledY;
+        mouseMovedC.setXY(scaledX, scaledY);
 
         repaint();
     }
