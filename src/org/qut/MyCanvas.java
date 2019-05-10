@@ -5,14 +5,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
     // Draw Commands is a list of strings containing
     // What's been drawn (in order)
     public ArrayList<String> drawCommands = new ArrayList();
 
+    // Current shape to be drawn
+    // State mutation is done on MyFrameLayout
     public MyShape.Shape curDrawShape = MyShape.Shape.ELLIPSE;
 
+    // TODO: Encapsulate all the "current" variables into a class?
+    // String to store polygon clicked coordinates
+    public String curPolygonCoords = "";
+
+    // TODO: Make these into Objects
     public Integer outlineRValue = 0;
     public Integer outlineGValue = 0;
     public Integer outlineBValue = 0;
@@ -21,7 +29,14 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     public Integer fillGValue = 0;
     public Integer fillBValue = 0;
 
+    // Do we wanna fill the shape?
+    // State mutation is done in MyFrameLayout
+    // Maybe write a setter/getter for this
     public boolean curFillShape = false;
+
+    // TODO: Make these into objects
+    public Double mouseMovedX = -1.0;
+    public Double mouseMovedY = -1.0;
 
     public Double mousePressedX = -1.0;
     public Double mousePressedY = -1.0;
@@ -173,6 +188,36 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 g2.draw(ellipse);
             }
 
+            // Polygon
+            if (cmds[0].toUpperCase().equals("POLYGON")) {
+                // Slice array
+                String[] coords = Arrays.copyOfRange(cmds, 1, cmds.length);
+
+                // Construct n_points
+                int n_points = (coords.length / 2);
+                int x_points[] = new int[n_points];
+                int y_points[] = new int[n_points];
+
+                for (int i = 0; i < coords.length; i += 2) {
+                    int x = scaleX2WinWidth(coords[i]);
+                    int y = scaleY2WinHeight(coords[i+1]);
+
+                    x_points[i/2] = x;
+                    y_points[i/2] = y;
+                }
+
+                Polygon poly = new Polygon(x_points, y_points, n_points);
+
+                if (isFilling) {
+                    Color curColor = g2.getColor();
+
+                    g2.setColor(Color.decode(fillRgbToHex()));
+                    g2.fillPolygon(poly);
+                    g2.setColor(curColor);
+                }
+
+                g2.drawPolygon(poly);
+            }
         }
 
         // If we're "previewing" the draw state
@@ -216,6 +261,41 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 g2.draw(ellipse);
             }
+        }
+
+        // If the drawing is polygon, we don't depend on the mousePressedValues
+        if (curDrawShape == MyShape.Shape.POLYGON && curPolygonCoords.length() > 0) {
+            // Split by space
+            String[] coords = curPolygonCoords.split("\\s+");
+
+            int n_points = (coords.length / 2) + 1;
+            int x_points[] = new int[n_points];
+            int y_points[] = new int[n_points];
+
+
+            for (int i = 0; i < coords.length; i += 2) {
+                int x = scaleX2WinWidth(coords[i]);
+                int y = scaleY2WinHeight(coords[i+1]);
+
+                x_points[i/2] = x;
+                y_points[i/2] = y;
+            }
+
+            x_points[n_points - 1] = scaleX2WinWidth(mouseMovedX);
+            y_points[n_points - 1] = scaleY2WinHeight(mouseMovedY);
+
+
+            Polygon poly = new Polygon(x_points, y_points, n_points);
+
+            if (curFillShape) {
+                Color curColor = g2.getColor();
+
+                g2.setColor(Color.decode(fillRgbToHex()));
+                g2.fillPolygon(poly);
+                g2.setColor(curColor);
+            }
+
+            g2.drawPolygon(poly);
         }
     }
 
@@ -293,6 +373,13 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        Double scaledX = normalizeX(e.getX());
+        Double scaledY = normalizeY(e.getY());
+
+        mouseMovedX = scaledX;
+        mouseMovedY = scaledY;
+
+        repaint();
     }
 
     @Override
@@ -301,13 +388,38 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Mouse pressed only happens
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
 
         if (curDrawShape == MyShape.Shape.POINT) {
             drawCommands.add("FILL " + outlineRgbToHex());
             drawCommands.add("PLOT " + scaledX + " " + scaledY);
+        }
+
+        if (curDrawShape == MyShape.Shape.POLYGON) {
+            if (e.getClickCount() == 1) {
+                curPolygonCoords += scaledX + " " + scaledY + " ";
+            }
+
+            // Double click means polygon drawing ends
+            else if (e.getClickCount() == 2) {
+                // Add PEN Shape
+                drawCommands.add("PEN " + outlineRgbToHex());
+
+                // Add FILL command
+                if (curFillShape) {
+                    drawCommands.add("FILL " + fillRgbToHex());
+                }
+
+                drawCommands.add("POLYGON " + curPolygonCoords);
+
+                if (curFillShape) {
+                    drawCommands.add("FILL OFF");
+                }
+
+                // Reset polygon coordinates
+                curPolygonCoords = "";
+            }
         }
 
         repaint();
