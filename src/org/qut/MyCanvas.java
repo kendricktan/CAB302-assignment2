@@ -7,6 +7,8 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 /**
  * Canvas to view processed VEC commands
  */
@@ -100,6 +102,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         repaint();
     }
 
+    /**
+     * Gets (stateful) draw VEC commands
+     * @return VEC commands
+     */
     public ArrayList<String> getCommands() {
         return drawCommands;
     }
@@ -172,12 +178,12 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
 
             // Change color
-            if (cmds[0].toUpperCase().equals("PEN")) {
+            else if (cmds[0].toUpperCase().equals("PEN")) {
                 g2.setColor(Color.decode(cmds[1]));
             }
 
             // Point
-            if (cmds[0].toUpperCase().equals("PLOT")) {
+            else if (cmds[0].toUpperCase().equals("PLOT")) {
                 int x = scaleX2WinWidth(cmds[1]);
                 int y = scaleY2WinHeight(cmds[2]);
                 g2.drawLine(x, y, x, y);
@@ -185,78 +191,97 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
             // Rectangle, Line, Ellipse
             else if (cmds[0].toUpperCase().equals("RECTANGLE") || cmds[0].toUpperCase().equals("LINE") || cmds[0].toUpperCase().equals("ELLIPSE")) {
-                int x1 = scaleX2WinWidth(cmds[1]);
-                int y1 = scaleY2WinHeight(cmds[2]);
-                int x2 = scaleX2WinWidth(cmds[3]);
-                int y2 = scaleY2WinHeight(cmds[4]);
+                try {
+                    int x1 = scaleX2WinWidth(cmds[1]);
+                    int y1 = scaleY2WinHeight(cmds[2]);
+                    int x2 = scaleX2WinWidth(cmds[3]);
+                    int y2 = scaleY2WinHeight(cmds[4]);
 
-                int xMin = Math.min(x1, x2);
-                int yMin = Math.min(y1, y2);
+                    int xMin = Math.min(x1, x2);
+                    int yMin = Math.min(y1, y2);
 
-                int xMax = Math.max(x1, x2);
-                int yMax = Math.max(y1, y2);
+                    int xMax = Math.max(x1, x2);
+                    int yMax = Math.max(y1, y2);
 
-                Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
+                    Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
 
-                // If fill
-                if (isFilling) {
-                    // Get current color to revert back to the outline color
-                    Color prevColor = g2.getColor();
-                    g2.setColor(Color.decode(fillingColor));
+                    // If fill
+                    if (isFilling) {
+                        // Get current color to revert back to the outline color
+                        Color prevColor = g2.getColor();
+                        g2.setColor(Color.decode(fillingColor));
 
-                    // Fill RECT
+                        // Fill RECT
+                        if (cmds[0].toUpperCase().equals("RECTANGLE")) {
+                            g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
+                        }
+
+                        // Fill Ellipse
+                        else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                            g2.fill(ellipse);
+                        }
+
+                        // Revert back to outline color
+                        g2.setColor(prevColor);
+                    }
+
                     if (cmds[0].toUpperCase().equals("RECTANGLE")) {
-                        g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
+                        g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
+                    } else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                        g2.draw(ellipse);
+                    } else if (cmds[0].toUpperCase().equals("LINE")) {
+                        g2.drawLine(x1, y1, x2, y2);
                     }
-
-                    // Fill Ellipse
-                    else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
-                        g2.fill(ellipse);
-                    }
-
-                    // Revert back to outline color
-                    g2.setColor(prevColor);
-                }
-
-                if (cmds[0].toUpperCase().equals("RECTANGLE")) {
-                    g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
-                } else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
-                    g2.draw(ellipse);
-                } else if (cmds[0].toUpperCase().equals("LINE")) {
-                    g2.drawLine(x1, y1, x2, y2);
+                } catch (Exception ex) {
+                    showMessageDialog(null, cmds[0] + " has corrupted values, reverting...");
+                    resetCommands();
+                    return;
                 }
             }
 
             // Polygon
             else if (cmds[0].toUpperCase().equals("POLYGON")) {
-                // Slice array
-                String[] coords = Arrays.copyOfRange(cmds, 1, cmds.length);
+                try {
+                    // Slice array
+                    String[] coords = Arrays.copyOfRange(cmds, 1, cmds.length);
 
-                // Construct n_points from array of string
-                int n_points = (coords.length / 2);
-                int x_points[] = new int[n_points];
-                int y_points[] = new int[n_points];
+                    // Construct n_points from array of string
+                    int n_points = (coords.length / 2);
+                    int x_points[] = new int[n_points];
+                    int y_points[] = new int[n_points];
 
-                for (int i = 0; i < coords.length; i += 2) {
-                    int x = scaleX2WinWidth(coords[i]);
-                    int y = scaleY2WinHeight(coords[i + 1]);
+                    for (int i = 0; i < coords.length; i += 2) {
+                        int x = scaleX2WinWidth(coords[i]);
+                        int y = scaleY2WinHeight(coords[i + 1]);
 
-                    x_points[i / 2] = x;
-                    y_points[i / 2] = y;
+                        x_points[i / 2] = x;
+                        y_points[i / 2] = y;
+                    }
+
+                    // New polygon
+                    Polygon poly = new Polygon(x_points, y_points, n_points);
+
+                    if (isFilling) {
+                        Color curColor = g2.getColor();
+
+                        g2.setColor(Color.decode(fillingColor));
+                        g2.fillPolygon(poly);
+                        g2.setColor(curColor);
+                    }
+
+                    g2.drawPolygon(poly);
+                } catch (Exception ex) {
+                    showMessageDialog(null, cmds[0] + " has corrupted values, reverting...");
+                    resetCommands();
+                    return;
                 }
+            }
 
-                // New polygon
-                Polygon poly = new Polygon(x_points, y_points, n_points);
-
-                if (isFilling) {
-                    Color curColor = g2.getColor();
-
-                    g2.setColor(Color.decode(fillingColor));
-                    g2.fillPolygon(poly);
-                    g2.setColor(curColor);
-                }
-
-                g2.drawPolygon(poly);
+            // Unnkown command
+            else {
+                showMessageDialog(null, "Unknown command: " + cmds[0] + ", reverting...");
+                resetCommands();
+                return;
             }
         }
 
