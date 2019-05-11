@@ -111,11 +111,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     }
 
     /* Internal helper functions */
-    private String outlineRgbToHex() {
+    private String penRGB2HEX() {
         return String.format("#%02x%02x%02x", penColor.getRed(), penColor.getGreen(), penColor.getBlue());
     }
 
-    private String fillRgbToHex() {
+    private String fillRGB2HEX() {
         return String.format("#%02x%02x%02x", fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue());
     }
 
@@ -301,7 +301,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             Ellipse2D ellipse = new Ellipse2D.Double(xMin, yMin, xMax - xMin, yMax - yMin);
 
             if (curFillShape) {
-                g2.setColor(Color.decode(fillRgbToHex()));
+                g2.setColor(Color.decode(fillRGB2HEX()));
 
                 if (curDrawShape == MyShape.Shape.RECTANGLE) {
                     g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
@@ -310,7 +310,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 }
             }
 
-            g2.setColor(Color.decode(outlineRgbToHex()));
+            g2.setColor(Color.decode(penRGB2HEX()));
 
             if (curDrawShape == MyShape.Shape.RECTANGLE) {
                 g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
@@ -344,11 +344,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             Polygon poly = new Polygon(x_points, y_points, n_points);
 
             if (curFillShape) {
-                g2.setColor(Color.decode(fillRgbToHex()));
+                g2.setColor(Color.decode(fillRGB2HEX()));
                 g2.fillPolygon(poly);
             }
 
-            g2.setColor(Color.decode(outlineRgbToHex()));
+            g2.setColor(Color.decode(penRGB2HEX()));
 
             g2.drawPolygon(poly);
         }
@@ -359,6 +359,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         Double scaledX = normalizeX(e.getX());
         Double scaledY = normalizeY(e.getY());
+
+        if (curDrawShape == MyShape.Shape.POINT) {
+            drawCommands.add("FILL " + penRGB2HEX());
+            drawCommands.add("PLOT " + scaledX + " " + scaledY);
+        }
 
         if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
             mousePressedC.setXY(scaledX, scaledY);
@@ -374,11 +379,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         if (curDrawShape == MyShape.Shape.RECTANGLE || curDrawShape == MyShape.Shape.ELLIPSE || curDrawShape == MyShape.Shape.LINE) {
             // Add PEN Shape
-            drawCommands.add("PEN " + outlineRgbToHex());
+            drawCommands.add("PEN " + penRGB2HEX());
 
             // Add FILL command
             if (curFillShape) {
-                drawCommands.add("FILL " + fillRgbToHex());
+                drawCommands.add("FILL " + fillRGB2HEX());
             }
 
             double startX = Math.min(mousePressedC.getX(), scaledX);
@@ -443,7 +448,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         Double scaledY = normalizeY(e.getY());
 
         if (curDrawShape == MyShape.Shape.POINT) {
-            drawCommands.add("FILL " + outlineRgbToHex());
+            drawCommands.add("FILL " + penRGB2HEX());
             drawCommands.add("PLOT " + scaledX + " " + scaledY);
         }
 
@@ -456,11 +461,11 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             // Double click means polygon drawing ends
             else if (e.getClickCount() == 2) {
                 // Add PEN Shape
-                drawCommands.add("PEN " + outlineRgbToHex());
+                drawCommands.add("PEN " + penRGB2HEX());
 
                 // Add FILL command
                 if (curFillShape) {
-                    drawCommands.add("FILL " + fillRgbToHex());
+                    drawCommands.add("FILL " + fillRGB2HEX());
                 }
 
                 drawCommands.add("POLYGON " + curPolygonCoords);
