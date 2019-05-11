@@ -7,6 +7,9 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Canvas to view processed VEC commands
+ */
 public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
     // Draw Commands is a list of strings containing
     // What's been drawn (in order)
@@ -16,7 +19,6 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     // State mutation is done on MyFrameLayout
     public MyShape.Shape curDrawShape = MyShape.Shape.ELLIPSE;
 
-    // TODO: Encapsulate all the "current" variables into a stateful class?
     // String to store polygon clicked coordinates
     public String curPolygonCoords = "";
 
@@ -28,9 +30,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     // Maybe write a setter/getter for this
     public boolean curFillShape = false;
 
-    public Coordinate mouseMovedC = new Coordinate(-1.0, -1.0);
-    public Coordinate mousePressedC = new Coordinate(-1.0, -1.0);
-    public Coordinate mouseDraggedC = new Coordinate(-1.0, -1.0);
+    public MyCoordinate mouseMovedC = new MyCoordinate(-1.0, -1.0);
+    public MyCoordinate mousePressedC = new MyCoordinate(-1.0, -1.0);
+    public MyCoordinate mouseDraggedC = new MyCoordinate(-1.0, -1.0);
 
     // Constructor
     public MyCanvas() {
@@ -42,18 +44,30 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     /* Public helper functions */
 
+    /**
+     * Resets _ALL_ of the current draw commands
+     */
     public void resetCommands() {
         drawCommands = new ArrayList<>();
 
         repaint();
     }
 
-    public void addCommand(String s) {
-        drawCommands.add(s);
+    /**
+     * Adds the provided draw command
+     * @param cmd The command to add
+     */
+    public void addCommand(String cmd) {
+        drawCommands.add(cmd);
 
         repaint();
     }
 
+    /**
+     * Undos the last command
+     * Does smart checking to see if FILL / PEN exists
+     * If they exist then remove them as well
+     */
     public void undoLastCommand() {
         if (drawCommands.size() == 0) {
             return;
@@ -99,30 +113,32 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         return String.format("#%02x%02x%02x", fillColor.getRed(), fillColor.getGreen(), fillColor.getBlue());
     }
 
-    /* Scales x value to window width value
-        x must be between 0.0 and 1.0
+    /* Polymorphic methods to s
+       scales x value to window width value
+       x must be between 0.0 and 1.0
     */
-    private int scaleX2WinWidth (Double x) {
+    private int scaleX2WinWidth(Double x) {
         return (int) (x * getWidth());
     }
 
-    private int scaleX2WinWidth (String x) {
+    private int scaleX2WinWidth(String x) {
         return scaleX2WinWidth(Double.valueOf(x));
     }
 
-    private int scaleY2WinHeight (Double y) {
+    private int scaleY2WinHeight(Double y) {
         return (int) (y * getHeight());
     }
 
-    private int scaleY2WinHeight (String y) {
+    private int scaleY2WinHeight(String y) {
         return scaleY2WinHeight(Double.valueOf(y));
     }
 
-    private Double normalizeX (int x) {
+    // Normalizes int value to be within range of 0.0 - 1.0
+    private Double normalizeX(int x) {
         return Double.valueOf(x) / this.getWidth();
     }
 
-    private Double normalizeY (int y) {
+    private Double normalizeY(int y) {
         return Double.valueOf(y) / this.getHeight();
     }
 
@@ -140,16 +156,16 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         boolean isFilling = false;
         String fillingColor = "#FFFFFF";
 
-        // TODO: Polgyon
-        for (String curCommand: drawCommands) {
+        // Iterate though each command and
+        // perform state changes (aka drawing on the screen)
+        for (String curCommand : drawCommands) {
             String[] cmds = curCommand.split("\\s+");
 
             // Filling
             if (cmds[0].toUpperCase().equals("FILL")) {
                 if (cmds[1].toUpperCase().equals("OFF")) {
                     isFilling = false;
-                }
-                else {
+                } else {
                     isFilling = true;
                     fillingColor = cmds[1];
                 }
@@ -167,7 +183,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 g2.drawLine(x, y, x, y);
             }
 
-            // Rectangle
+            // Rectangle, Line, Ellipse
             else if (cmds[0].toUpperCase().equals("RECTANGLE") || cmds[0].toUpperCase().equals("LINE") || cmds[0].toUpperCase().equals("ELLIPSE")) {
                 int x1 = scaleX2WinWidth(cmds[1]);
                 int y1 = scaleY2WinHeight(cmds[2]);
@@ -204,11 +220,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 if (cmds[0].toUpperCase().equals("RECTANGLE")) {
                     g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
-                }
-                else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
+                } else if (cmds[0].toUpperCase().equals("ELLIPSE")) {
                     g2.draw(ellipse);
-                }
-                else if (cmds[0].toUpperCase().equals("LINE")) {
+                } else if (cmds[0].toUpperCase().equals("LINE")) {
                     g2.drawLine(x1, y1, x2, y2);
                 }
             }
@@ -225,10 +239,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 for (int i = 0; i < coords.length; i += 2) {
                     int x = scaleX2WinWidth(coords[i]);
-                    int y = scaleY2WinHeight(coords[i+1]);
+                    int y = scaleY2WinHeight(coords[i + 1]);
 
-                    x_points[i/2] = x;
-                    y_points[i/2] = y;
+                    x_points[i / 2] = x;
+                    y_points[i / 2] = y;
                 }
 
                 // New polygon
@@ -246,8 +260,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             }
         }
 
-        // If we're "previewing" the draw state
-        // Read the latest values
+        // Section is for "PREVIEW"
         if (mousePressedC.getX() >= 0.0 && mousePressedC.getY() >= 0.0 && mouseDraggedC.getX() >= 0.0 && mouseDraggedC.getY() >= 0.0) {
             int x1 = scaleX2WinWidth(mousePressedC.getX());
             int x2 = scaleX2WinWidth(mouseDraggedC.getX());
@@ -267,8 +280,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
                 if (curDrawShape == MyShape.Shape.RECTANGLE) {
                     g2.fillRect(xMin, yMin, xMax - xMin, yMax - yMin);
-                }
-                else if (curDrawShape == MyShape.Shape.ELLIPSE) {
+                } else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                     g2.fill(ellipse);
                 }
             }
@@ -277,13 +289,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
             if (curDrawShape == MyShape.Shape.RECTANGLE) {
                 g2.drawRect(xMin, yMin, xMax - xMin, yMax - yMin);
-            }
-
-            else if (curDrawShape == MyShape.Shape.ELLIPSE) {
+            } else if (curDrawShape == MyShape.Shape.ELLIPSE) {
                 g2.draw(ellipse);
-            }
-
-            else if (curDrawShape == MyShape.Shape.LINE) {
+            } else if (curDrawShape == MyShape.Shape.LINE) {
                 g2.drawLine(x1, y1, x2, y2);
             }
         }
@@ -297,18 +305,16 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
             int x_points[] = new int[n_points];
             int y_points[] = new int[n_points];
 
-
             for (int i = 0; i < coords.length; i += 2) {
                 int x = scaleX2WinWidth(coords[i]);
-                int y = scaleY2WinHeight(coords[i+1]);
+                int y = scaleY2WinHeight(coords[i + 1]);
 
-                x_points[i/2] = x;
-                y_points[i/2] = y;
+                x_points[i / 2] = x;
+                y_points[i / 2] = y;
             }
 
             x_points[n_points - 1] = scaleX2WinWidth(mouseMovedC.getX());
             y_points[n_points - 1] = scaleY2WinHeight(mouseMovedC.getY());
-
 
             Polygon poly = new Polygon(x_points, y_points, n_points);
 
@@ -350,10 +356,10 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 drawCommands.add("FILL " + fillRgbToHex());
             }
 
-            Double startX = Math.min(mousePressedC.getX(), scaledX);
-            Double startY = Math.min(mousePressedC.getY(), scaledY);
-            Double endX = Math.max(mousePressedC.getX(), scaledX);
-            Double endY = Math.max(mousePressedC.getY(), scaledY);
+            double startX = Math.min(mousePressedC.getX(), scaledX);
+            double startY = Math.min(mousePressedC.getY(), scaledY);
+            double endX = Math.max(mousePressedC.getX(), scaledX);
+            double endY = Math.max(mousePressedC.getY(), scaledY);
 
             // Add RECTANGLE command
             if (curDrawShape == MyShape.Shape.RECTANGLE) {

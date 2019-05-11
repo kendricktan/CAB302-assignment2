@@ -1,9 +1,12 @@
 package org.qut;
 
-public class Coordinate {
+/**
+ * Coordinate object for doubles. No generics in existing java coords
+ */
+public class MyCoordinate {
     private double x, y;
 
-    public Coordinate(double x, double y) {
+    public MyCoordinate(double x, double y) {
         this.x = x;
         this.y = y;
     }
