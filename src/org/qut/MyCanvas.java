@@ -42,6 +42,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
         addMouseMotionListener(this);
         addMouseListener(this);
+
+
     }
 
     /* Public helper functions */
@@ -50,8 +52,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
      * Resets _ALL_ of the current draw commands
      */
     public void resetCommands() {
-        drawCommands = new ArrayList<>();
-
+        drawCommands.clear();
         repaint();
     }
 
@@ -481,5 +482,9 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
         }
 
         repaint();
+    }
+
+    public ArrayList<String> getDrawCommands() {
+        return drawCommands;
     }
 }

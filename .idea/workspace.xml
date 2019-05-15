@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96aef65e-5fff-4741-b070-0b8cc8ea84b7" name="Default Changelist" comment="" />
+    <list default="true" id="96aef65e-5fff-4741-b070-0b8cc8ea84b7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/org/qut/MyCanvasTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/qut/MyCoordinateTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/qut/MyFrameComponentFactoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/qut/MyFrameLayoutTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/qut/MyShapeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CAB302-assignment2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CAB302-assignment2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/qut/MyCanvas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/qut/MyCanvas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/qut/MyFrameLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/qut/MyFrameLayout.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,29 +29,46 @@
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/org/qut/Main.java">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyCoordinateTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="17">
-                  <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+                <state relative-caret-position="180">
+                  <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyShapeTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="60">
+                  <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameComponentFactoryTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/org/qut/MyCoordinate.java">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyCanvasTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="51">
-                  <caret line="3" column="23" lean-forward="true" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
-                  <folding>
-                    <element signature="e#293#294#0" expanded="true" />
-                    <element signature="e#317#318#0" expanded="true" />
-                    <element signature="e#351#352#0" expanded="true" />
-                    <element signature="e#377#378#0" expanded="true" />
-                    <element signature="e#405#406#0" expanded="true" />
-                    <element signature="e#429#430#0" expanded="true" />
-                    <element signature="e#463#464#0" expanded="true" />
-                    <element signature="e#489#490#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="459">
+                  <caret line="40" column="38" lean-forward="true" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameLayoutTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="240">
+                  <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -48,26 +76,21 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/Main.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="120">
+                  <caret line="8" column="17" lean-forward="true" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameLayout.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="531">
-                  <caret line="301" column="33" selection-start-line="301" selection-start-column="16" selection-end-line="301" selection-end-column="33" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#9905#9906#0" expanded="true" />
-                    <element signature="e#9982#9983#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameComponentFactory.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="595">
-                  <caret line="35" column="45" lean-forward="true" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
+                <state relative-caret-position="-1134">
+                  <caret line="19" column="44" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="44" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -75,14 +98,33 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/BorderFactory.java">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyCoordinate.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="8296">
-                  <caret line="546" column="25" selection-start-line="546" selection-start-column="25" selection-end-line="546" selection-end-column="25" />
+                <state>
+                  <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyShape.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="75">
+                  <caret line="5" column="22" lean-forward="true" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/org/qut/MyCanvas.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-154">
+                  <caret line="12" column="9" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="9" />
                   <folding>
-                    <element signature="e#21667#21668#0" expanded="true" />
-                    <element signature="e#21701#21702#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#16070#16071#0" expanded="true" />
+                    <element signature="e#16105#16106#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -96,6 +138,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -112,10 +155,13 @@
       <find>undoLast</find>
       <find>setfocu</find>
       <find>polygon</find>
-      <find>undo</find>
-      <find>Double</find>
       <find>Double</find>
       <find>Unknown</find>
+      <find>resetC</find>
+      <find>set</find>
+      <find>paintComponent</find>
+      <find>CANVAS</find>
+      <find>undo</find>
     </findStrings>
     <replaceStrings>
       <replace>double</replace>
@@ -143,25 +189,30 @@
         <option value="$PROJECT_DIR$/src/org/qut/JButtonFactory.java" />
         <option value="$PROJECT_DIR$/src/org/qut/MyFrameComponentFactory.java" />
         <option value="$PROJECT_DIR$/src/org/qut/Main.java" />
-        <option value="$PROJECT_DIR$/src/org/qut/MyFrameLayout.java" />
         <option value="$PROJECT_DIR$/src/org/qut/MyShape.java" />
         <option value="$PROJECT_DIR$/src/org/qut/MyCoordinate.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/Testing.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/TestRunner.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyFrameComponentFactoryTest.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyFrameLayoutTest.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyShapeTest.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyFrameLayout.java" />
         <option value="$PROJECT_DIR$/src/org/qut/MyCanvas.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyCanvasTest.java" />
+        <option value="$PROJECT_DIR$/src/org/qut/MyCoordinateTest.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="960" />
-    <option name="width" value="952" />
-    <option name="height" value="1054" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -184,16 +235,33 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557538997743" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557908810099" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.qut" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -207,23 +275,92 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.qut.Main" />
+  <component name="RunManager" selected="JUnit.MyCanvasTest">
+    <configuration name="MyCanvasTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CAB302-assignment2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.qut.components.*" />
+          <option name="PATTERN" value="org.qut.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="org.qut" />
+      <option name="MAIN_CLASS_NAME" value="org.qut.MyCanvasTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyCanvasTest.addCommand" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302-assignment2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.qut.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.qut" />
+      <option name="MAIN_CLASS_NAME" value="org.qut.MyCanvasTest" />
+      <option name="METHOD_NAME" value="addCommand" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyCanvasTest.getCommands" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302-assignment2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.qut.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.qut" />
+      <option name="MAIN_CLASS_NAME" value="org.qut.MyCanvasTest" />
+      <option name="METHOD_NAME" value="getCommands" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyCoordinateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302-assignment2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.qut.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.qut" />
+      <option name="MAIN_CLASS_NAME" value="org.qut.MyCoordinateTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyCoordinateTest.setXY" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302-assignment2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.qut.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.qut" />
+      <option name="MAIN_CLASS_NAME" value="org.qut.MyCoordinateTest" />
+      <option name="METHOD_NAME" value="setXY" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.MyCanvasTest" />
+        <item itemvalue="JUnit.MyCanvasTest.addCommand" />
+        <item itemvalue="JUnit.MyCoordinateTest" />
+        <item itemvalue="JUnit.MyCoordinateTest.setXY" />
+        <item itemvalue="JUnit.MyCanvasTest.getCommands" />
       </list>
     </recent_temporary>
   </component>
@@ -240,8 +377,40 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 10m 00s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 10m 20s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 10m 47s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 11m 22s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 12m 15s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 12m 30s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_getCommands - 2019.05.15 at 18h 12m 43s.xml">
+      <configuration name="MyCanvasTest.getCommands" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCoordinateTest - 2019.05.15 at 18h 24m 59s.xml">
+      <configuration name="MyCoordinateTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest_addCommand - 2019.05.15 at 18h 25m 06s.xml">
+      <configuration name="MyCanvasTest.addCommand" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MyCanvasTest - 2019.05.15 at 18h 25m 27s.xml">
+      <configuration name="MyCanvasTest" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
@@ -249,15 +418,17 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.12633263" />
+      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.16347177" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Run with VisualVM" />
+      <window_info anchor="bottom" id="Debug with VisualVM" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3290461" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="2" weight="0.3290461" />
+      <window_info anchor="bottom" id="Messages" order="2" weight="0.32871288" />
       <window_info anchor="bottom" id="Version Control" order="3" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.3290461" />
-      <window_info anchor="bottom" id="Run" order="6" weight="0.3279743" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.20594059" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -325,105 +496,117 @@
     <entry file="jrt:///usr/lib/jvm/java-1.11.0-openjdk-amd64!/java.desktop/java/awt/Color.class" />
     <entry file="file://$PROJECT_DIR$/src/org/qut/MyColor.java" />
     <entry file="file://$PROJECT_DIR$/src/org/qut/MyColorPicker.java" />
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/JComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="1011" column="32" selection-start-line="1011" selection-start-column="31" selection-end-line="1011" selection-end-column="32" />
-        </state>
-      </provider>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/JComponent.java" />
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/BorderFactory.java" />
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/java/awt/EventDispatchThread.java" />
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/qut/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/org/qut/Testing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/qut/MyShape.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/javax/swing/BorderFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8296">
-          <caret line="546" column="25" selection-start-line="546" selection-start-column="25" selection-end-line="546" selection-end-column="25" />
+        <state relative-caret-position="165">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
           <folding>
-            <element signature="e#21667#21668#0" expanded="true" />
-            <element signature="e#21701#21702#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/TestRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameComponentFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="45" lean-forward="true" selection-start-line="35" selection-start-column="45" selection-end-line="35" selection-end-column="45" />
+        <state relative-caret-position="105">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/java/awt/EventDispatchThread.java">
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameLayoutTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="89" selection-start-line="89" selection-end-line="89" />
+        <state relative-caret-position="240">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/qut/MyCanvas.java">
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyShape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1989">
-          <caret line="117" column="30" selection-start-line="117" selection-start-column="30" selection-end-line="117" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2837#2838#0" expanded="true" />
-            <element signature="e#2872#2873#0" expanded="true" />
-            <element signature="e#3382#3383#0" expanded="true" />
-            <element signature="e#3427#3428#0" expanded="true" />
-            <element signature="e#3472#3473#0" expanded="true" />
-            <element signature="e#3529#3530#0" expanded="true" />
-            <element signature="e#3575#3576#0" expanded="true" />
-            <element signature="e#3621#3622#0" expanded="true" />
-            <element signature="e#3667#3668#0" expanded="true" />
-            <element signature="e#3725#3726#0" expanded="true" />
-            <element signature="e#3765#3766#0" expanded="true" />
-            <element signature="e#3823#3824#0" expanded="true" />
-            <element signature="e#3863#3864#0" expanded="true" />
-            <element signature="e#3922#3923#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="75">
+          <caret line="5" column="22" lean-forward="true" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="17" lean-forward="true" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameLayout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="301" column="33" selection-start-line="301" selection-start-column="16" selection-end-line="301" selection-end-column="33" />
+        <state relative-caret-position="-1134">
+          <caret line="19" column="44" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9905#9906#0" expanded="true" />
-            <element signature="e#9982#9983#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyCanvas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-154">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#16070#16071#0" expanded="true" />
+            <element signature="e#16105#16106#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/qut/MyCoordinate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="23" lean-forward="true" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
-          <folding>
-            <element signature="e#293#294#0" expanded="true" />
-            <element signature="e#317#318#0" expanded="true" />
-            <element signature="e#351#352#0" expanded="true" />
-            <element signature="e#377#378#0" expanded="true" />
-            <element signature="e#405#406#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
-            <element signature="e#463#464#0" expanded="true" />
-            <element signature="e#489#490#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyFrameComponentFactoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyShapeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyCoordinateTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/qut/MyCanvasTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="40" column="38" lean-forward="true" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -467,7 +650,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>10</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -484,7 +667,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

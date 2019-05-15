@@ -61,6 +61,8 @@ public class MyFrameLayout {
             public void keyReleased(KeyEvent e) {
             }
         });
+
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void createMenuBar() {
