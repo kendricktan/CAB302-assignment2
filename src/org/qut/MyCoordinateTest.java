@@ -22,7 +22,7 @@ class MyCoordinateTest {
 
         System.out.println("test case get X command");
         Double testX = testCoordinates.getX();
-        assertEquals(10, testX);
+        assertEquals(Double.valueOf(10), testX);
     }
 
     @org.junit.jupiter.api.Test
@@ -40,7 +40,7 @@ class MyCoordinateTest {
 
         System.out.println("test case get Y command");
         Double testY = testCoordinates.getY();
-        assertEquals(10, testY);
+        assertEquals(Double.valueOf(10), testY);
     }
 
     @org.junit.jupiter.api.Test
